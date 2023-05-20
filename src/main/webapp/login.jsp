@@ -25,6 +25,8 @@
 </head>
 
 <body class="">
+<%@ include file="all-components/cdn-links.jsp" %>
+
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
@@ -96,12 +98,12 @@
                   <p class="mb-0">Enter your email and password</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
+                  <form role="form" action="UserLoginController" method="post">
                     <div class="mb-3">
-                      <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                      <input type="email" name="email "class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                     </div>
                     <div class="mb-3">
-                      <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
+                      <input type="email" class="form-control form-control-lg" name="password" placeholder="Password" aria-label="Password">
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe">
