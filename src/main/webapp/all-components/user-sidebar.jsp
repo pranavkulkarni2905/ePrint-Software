@@ -104,7 +104,7 @@
           </div>
         </div>
       </div>
-      <a href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard" target="_blank" class="btn btn-dark btn-sm w-100 mb-3">Contact Us</a>
+      <a href="" class="btn btn-dark btn-sm w-100 mb-3">Contact Us</a>
       <a class="btn btn-primary btn-sm mb-0 w-100" href="" type="button">Logout</a>
     </div>
   </aside>
