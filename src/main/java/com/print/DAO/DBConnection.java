@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-	public static void main(String args[]){  
+	
 
-	//public static Connection getConnection() {
+	public static Connection getConnection() {
 		Connection con = null;
 		try {
 			// load drivers
@@ -25,7 +25,7 @@ public class DBConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return con;
-	//}
+		return con;
+	
 	}
 }
