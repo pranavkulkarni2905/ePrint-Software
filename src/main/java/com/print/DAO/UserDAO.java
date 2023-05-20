@@ -35,15 +35,10 @@ public class UserDAO {
 		}
 		return i;
 	}
-	public void sendotp(String name,String email) {
-com.print.email.SendMail sm=new com.print.email.SendMail();
+	public String sendotp(String name,String email) {
+        com.print.email.SendMail sm=new com.print.email.SendMail();
 		
 		String otp=sm.generateOTP();
-		
-		
-		
-		
-		
 		
 		final String subject = "Verify Your Account | ePrint Software";
 		final String messg = "Dear "+name+",\n\n"
@@ -73,5 +68,6 @@ com.print.email.SendMail sm=new com.print.email.SendMail();
 				+ "\r\n"
 				+ "";
 		sm.sendEmail(email, messg, subject);
+		return otp;
 	}
 }

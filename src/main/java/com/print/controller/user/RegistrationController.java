@@ -34,21 +34,23 @@ public class RegistrationController extends HttpServlet {
 
 		String name=request.getParameter("name");
 		String email=request.getParameter("email");
-		String password=request.getParameter("passowrd");
+		String password=request.getParameter("password");
 		String phone=request.getParameter("phone");
 		String degree=request.getParameter("degree");
 		String branch=request.getParameter("branch");
 		
 		User uModel=new User(email, password, name, degree, branch, phone);
 		UserDAO ud=new UserDAO();
-		ud.sendotp(name,email);
+		
+		String otp=ud.sendotp(name,email);
 		
 		HttpSession session=request.getSession();
 
 		int i=ud.registerUser(uModel);
 		if(i>0) {
 			session.setAttribute("register-success",true);
-			response.sendRedirect("login.jsp");
+			session.setAttribute("otp", otp);
+			response.sendRedirect("otp-verification.jsp");
 		}else {
 			session.setAttribute("register-fail",false);
 			response.sendRedirect("sign-up.jsp");
