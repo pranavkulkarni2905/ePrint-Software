@@ -10,7 +10,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #4FAAF4;
+  background: #7FCDCD;
   font-weight: 400;
 }
 :where(.container, form, .input-field, header) {

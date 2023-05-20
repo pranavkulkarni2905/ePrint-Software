@@ -1,7 +1,6 @@
 package com.print.controller.user;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.print.DAO.UserDAO;
-import com.print.model.User;
 
 /**
- * Servlet implementation class RegistrationController
+ * Servlet implementation class OtpVerificationController
  */
-@WebServlet("/RegistrationController")
-public class RegistrationController extends HttpServlet {
+@WebServlet("/OtpVerificationController")
+public class OtpVerificationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegistrationController() {
+    public OtpVerificationController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,33 +29,30 @@ public class RegistrationController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String otp=request.getParameter("otp");
+		String a=request.getParameter("1");
+		String b=request.getParameter("2");
 
-		String name=request.getParameter("name");
+		String c=request.getParameter("3");
+
+		String d=request.getParameter("4");
+		
 		String email=request.getParameter("email");
-		String password=request.getParameter("password");
-		String phone=request.getParameter("phone");
-		String degree=request.getParameter("degree");
-		String branch=request.getParameter("branch");
 		
-		User uModel=new User(email, password, name, degree, branch, phone);
+		String inputOtp=a+b+c+d;
+		
 		UserDAO ud=new UserDAO();
-		
-		String otp=ud.sendotp(name,email);
-		
 		HttpSession session=request.getSession();
-
-		int i=ud.registerUser(uModel);
-		if(i>0) {
-			session.setAttribute("register-success",true);
-			session.setAttribute("otp", otp);
-			session.setAttribute("email", email);
-			response.sendRedirect("otp-verification.jsp");
+		
+		if(otp.equals(inputOtp)) {
+			ud.updateVerifiedStatus(email);
+			session.setAttribute("verified",true);
+			response.sendRedirect("login.jsp");
 		}else {
-			session.setAttribute("register-fail",false);
-			response.sendRedirect("sign-up.jsp");
+			session.setAttribute("not-verified",false);
+			response.sendRedirect("otp-verification.jsp");
 		}
-		
-		
+
 	}
 
 	/**

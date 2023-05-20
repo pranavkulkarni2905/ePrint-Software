@@ -35,6 +35,24 @@ public class UserDAO {
 		}
 		return i;
 	}
+	
+	public int updateVerifiedStatus(String email) {
+		int i=0;
+		con = DBConnection.getConnection();
+		try {
+			ps = con.prepareStatement(
+					"update user set verified=? where email=?");
+			ps.setString(1, "Yes");
+			ps.setString(2, email);
+			
+			i = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return i;
+	}
+	
 	public String sendotp(String name,String email) {
         com.print.email.SendMail sm=new com.print.email.SendMail();
 		
