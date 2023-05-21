@@ -3,6 +3,7 @@ package com.print.controller.user;
 import java.io.IOException;
 import java.sql.ResultSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.print.DAO.UserDAO;
+import com.print.model.User;
 
 /**
  * Servlet implementation class UserLoginController
@@ -36,24 +38,35 @@ public class UserLoginController extends HttpServlet {
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		ResultSet rs;
+
 		UserDAO uDao = new UserDAO();
 
-		rs = uDao.loginUser(email, password);
+		User u = uDao.loginUser(email, password);
+
 		HttpSession session = request.getSession();
 
+		ServletContext sc=request.getServletContext();
+		
 		try {
 
-			if (rs.getString(9).equals("yes") || rs.getString(9).equals("Yes")) {
-				session.setAttribute("login-success", true);
-				response.sendRedirect("user/dashboard.jsp");
+			if (u != null) {
+				if (u.getVerified().equals("yes") || u.getVerified().equals("Yes")) {
+					session.setAttribute("login-success", true);
+					session.setAttribute("user1", u);
+					sc.setAttribute("user", u);
+					response.sendRedirect("user/index.jsp");
+					System.out.println("logged..");
+				} else {
+
+					String otp = uDao.sendotp(u.getName(), email);
+
+					session.setAttribute("otp", otp);
+					session.setAttribute("not-check", false);
+					response.sendRedirect("otp-verification.jsp");
+				}
 			} else {
 				session.setAttribute("login-fail", false);
-				String otp = uDao.sendotp(rs.getString(4), email);
-
-				session.setAttribute("otp", otp);
-
-				response.sendRedirect("otp-verification.jsp");
+				response.sendRedirect("login.jsp");
 			}
 
 		} catch (Exception e) {

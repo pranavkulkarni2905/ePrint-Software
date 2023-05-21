@@ -2,13 +2,17 @@ package com.print.model;
 
 public class User {
 
+	int id;
 	String email;
 	String password;
 	String name;
 	String degree;
 	String branch;
 	String phone;
-	
+	String verified;
+	String registration_timestamp;
+	String logout_time;
+	String loginStatus;
 	
 	public User(String email, String password, String name, String degree, String branch, String phone) {
 		super();
@@ -19,6 +23,31 @@ public class User {
 		this.branch = branch;
 		this.phone = phone;
 	}
+	
+	public User(int id,String email, String password, String name, String degree, String branch, String phone, String verified,
+			String registration_timestamp, String logout_time,String loginStatus) {
+		super();
+		this.id=id;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.degree = degree;
+		this.branch = branch;
+		this.phone = phone;
+		this.verified = verified;
+		this.registration_timestamp = registration_timestamp;
+		this.logout_time = logout_time;
+		this.loginStatus=loginStatus;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -55,5 +84,39 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public String getVerified() {
+		return verified;
+	}
+
+	public void setVerified(String verified) {
+		this.verified = verified;
+	}
+
+	public String getRegistration_timestamp() {
+		return registration_timestamp;
+	}
+
+	public void setRegistration_timestamp(String registration_timestamp) {
+		this.registration_timestamp = registration_timestamp;
+	}
+
+	public String getLogout_time() {
+		return logout_time;
+	}
+
+	public void setLogout_time(String logout_time) {
+		this.logout_time = logout_time;
+	}
+
+	public String getLoginStatus() {
+		return loginStatus;
+	}
+
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus = loginStatus;
+	}
+	
+	
 	
 }

@@ -36,7 +36,7 @@ public class UserDAO {
 		}
 		return i;
 	}
-<<<<<<< HEAD
+
 	
 	public int updateVerifiedStatus(String email) {
 		int i=0;
@@ -55,19 +55,14 @@ public class UserDAO {
 		return i;
 	}
 	
-	public String sendotp(String name,String email) {
-        com.print.email.SendMail sm=new com.print.email.SendMail();
-		
-		String otp=sm.generateOTP();
-		
-=======
+
 
 	public String sendotp(String name, String email) {
 		com.print.email.SendMail sm = new com.print.email.SendMail();
 
 		String otp = sm.generateOTP();
 
->>>>>>> d06f7b4b1cabe0394bb9577c832b26efb571c540
+
 		final String subject = "Verify Your Account | ePrint Software";
 		final String messg = "Dear " + name + ",\n\n"
 				+ "Thank you for choosing ePrint Software! To ensure the security of your account, we require a verification process to activate your ePrint account. Please follow the instructions below to verify your account and complete the registration process.\r\n"
@@ -88,15 +83,59 @@ public class UserDAO {
 		return otp;
 	}
 
-	public ResultSet loginUser(String email, String password) {
+	public User loginUser(String email, String password) {
 
 		con = DBConnection.getConnection();
 		ResultSet rs = null;
+		User u = null;
 		try {
 			ps = con.prepareStatement("select * from user where email=? and password=?");
 			ps.setString(1, email);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
+			while(rs.next()) {
+				u=new User(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(7), rs.getString(8), rs.getString(5),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(6));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return u;
+	}
+
+
+	public int uploadDocuments(int userId, String setName, String token, String imageFileName) {
+		int i = 0;
+		Timestamp date = new Timestamp(new Date().getTime());
+		con = DBConnection.getConnection();
+		try {
+			ps = con.prepareStatement(
+					"insert into document(user_id,set_name,token_no,doc_name) values(?,?,?,?)");
+			ps.setInt(1, userId);
+			ps.setString(2, setName);
+			ps.setString(3, token);
+			ps.setString(4,imageFileName);
+			
+			i = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return i;
+		
+	}
+	
+	public ResultSet findDocumentByUserId(int id) {
+		ResultSet rs=null;
+		con = DBConnection.getConnection();
+		try {
+			ps = con.prepareStatement(
+					"select * from document where user_id=?");
+			ps.setInt(1, id);
+			
+			
+			rs=ps.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

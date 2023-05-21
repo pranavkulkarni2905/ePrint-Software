@@ -21,11 +21,56 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
+  <script src="sweetalert2.all.min.js"></script>
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
 </head>
 
 <body class="">
 <%@ include file="all-components/cdn-links.jsp" %>
+
+<%try{
+boolean msg = (boolean) session.getAttribute("verified");
+if (msg==true) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Congratulations!', 'Account Verified Successfully..','success')
+	</script>
+	<%
+}else{
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Something went wrong..','warning')
+	</script>
+	<% 
+}}catch(Exception e){
+	
+}
+session.removeAttribute("verified");
+%>
+
+<%try{
+boolean msg1 = (boolean) session.getAttribute("login-fail");
+if (msg1==false) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Ooops!', 'Invalid username and password.','warning')
+	</script>
+	<%
+}else{
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Something went wrong..','warning')
+	</script>
+	<% 
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("login-fail");
+%>
 
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
@@ -100,17 +145,17 @@
                 <div class="card-body">
                   <form role="form" action="UserLoginController" method="post">
                     <div class="mb-3">
-                      <input type="email" name="email "class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                      <input type="email" name="email"class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                     </div>
                     <div class="mb-3">
-                      <input type="email" class="form-control form-control-lg" name="password" placeholder="Password" aria-label="Password">
+                      <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" aria-label="Password">
                     </div>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe">
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div class="text-center">
-                      <button type="button" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                      <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
                     </div>
                   </form>
                 </div>

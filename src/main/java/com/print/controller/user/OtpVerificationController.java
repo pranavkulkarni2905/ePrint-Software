@@ -43,13 +43,14 @@ public class OtpVerificationController extends HttpServlet {
 		
 		UserDAO ud=new UserDAO();
 		HttpSession session=request.getSession();
+		System.out.println(otp+" "+inputOtp);
 		
 		if(otp.equals(inputOtp)) {
 			ud.updateVerifiedStatus(email);
 			session.setAttribute("verified",true);
 			response.sendRedirect("login.jsp");
 		}else {
-			session.setAttribute("not-verified",false);
+			session.setAttribute("not-verified",true);
 			response.sendRedirect("otp-verification.jsp");
 		}
 

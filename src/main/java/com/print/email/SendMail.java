@@ -28,7 +28,7 @@ public class SendMail {
     }
 	public static String generateOTP()
 	{
-		int otpLength=6;
+		int otpLength=4;
 		Random random=new Random();
 
 		StringBuilder sb=new StringBuilder();

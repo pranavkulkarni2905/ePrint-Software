@@ -19,22 +19,57 @@
 <%
 String otp=(String)session.getAttribute("otp");
 String email=(String)session.getAttribute("email");
+try{
 boolean msg = (boolean) session.getAttribute("register-success");
 if (msg==true) {
 	%>
 	<script type="text/javascript">
-		Swal.fire('Congratulations!', 'Registration successfully.We have sent otp for verification to your email -id.')
+		Swal.fire('Congratulations!', 'Registration successfully.We have sent otp for verification to your email -id.','success')
 	</script>
 	<%
 }else{
 	%>
 	<script type="text/javascript">
-		Swal.fire('Oops!', 'Something went wrong..')
+		Swal.fire('Oops!', 'Something went wrong..','warning')
 	</script>
 	<% 
 }
+}catch(Exception e){
+	
+}
+session.removeAttribute("register-success");
 %>
 
+<%
+try{
+boolean msg1 = (boolean) session.getAttribute("not-verified");
+if (msg1==true) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Invalid OTP:-OTP not verified.','warning')
+	</script>
+	<%
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("not-verified");
+%>
+<%
+try{
+boolean msg1 = (boolean) session.getAttribute("not-check");
+if (msg1==false) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Account is not verified. We have sent otp to your registered email id.','warning')
+	</script>
+	<%
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("not-check");
+%>
   <div class="container">
     <header><img src="otp.webp" width="240px" height="240px"></header>
     <h4>Enter OTP</h4>
@@ -46,9 +81,9 @@ if (msg==true) {
         <input type="number" name="1" />
         <input type="number" name="2" disabled />
         <input type="number" name="3" disabled />
-        <input type="number" name="3" disabled />
+        <input type="number" name="4" disabled />
       </div>
-      <button type="submit">Verify</button>
+      <button>Verify</button>
     </form>
     <p>Didn't receive the code <br> <a href="#" style="text-decoration: none;">Resend code</a></p>
   </div>
