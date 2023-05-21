@@ -240,10 +240,10 @@
                 <h6 class="text-capitalize">Upload files</h6>
                
               </div>
-              <div class="card-body p-3">
+		<div class="card-body p-3">
              
                 <div class="wrapper">
-                    <header>Upload Files</header>
+                   
                     <form action="#">
                       <input class="file-input" type="file" name="file" hidden>
                       <i class="fas fa-cloud-upload-alt"></i>
