@@ -1,3 +1,4 @@
+<%@page import="java.sql.ResultSet"%>
 <%@page import="com.print.DAO.UserDAO"%>
 <%@page import="java.util.Date"%>
 
@@ -54,49 +55,51 @@ if (u == null) {
 
 
 <body class="g-sidenav-show   bg-gray-100">
-<%
-
-try{
-boolean msg = (boolean) session.getAttribute("upload-success");
-if (msg==true) {
+	<%
+	try {
+		boolean msg = (boolean) session.getAttribute("upload-success");
+		if (msg == true) {
 	%>
 	<script type="text/javascript">
-		Swal.fire('Congratulations!', 'Documents Uploaded Successfuly.. Secure Pin Generated','success')
+		Swal.fire('Congratulations!',
+				'Documents Uploaded Successfuly.. Secure Pin Generated',
+				'success')
 	</script>
 	<%
-}else{
+	} else {
 	%>
 	<script type="text/javascript">
-		Swal.fire('Oops!', 'Something went wrong..','warning')
-	</script>
-	<% 
-}
-}catch(Exception e){
-	
-}
-session.removeAttribute("upload-success");
-%>
-
-<%try{
-boolean msg1 = (boolean) session.getAttribute("upload-fail");
-if (msg1==false) {
-	%>
-	<script type="text/javascript">
-		Swal.fire('Ooops!', 'Failed to upload douments.','warning')
+		Swal.fire('Oops!', 'Something went wrong..', 'warning')
 	</script>
 	<%
-}else{
+	}
+	} catch (Exception e) {
+
+	}
+	session.removeAttribute("upload-success");
+	%>
+
+	<%
+	try {
+		boolean msg1 = (boolean) session.getAttribute("upload-fail");
+		if (msg1 == false) {
 	%>
 	<script type="text/javascript">
-		Swal.fire('Oops!', 'Something went wrong..','warning')
+		Swal.fire('Ooops!', 'Failed to upload douments.', 'warning')
 	</script>
-	<% 
-}
-}catch(Exception e){
-	
-}
-session.removeAttribute("upload-fail");
-%>
+	<%
+	} else {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Something went wrong..', 'warning')
+	</script>
+	<%
+	}
+	} catch (Exception e) {
+
+	}
+	session.removeAttribute("upload-fail");
+	%>
 	<%@ include file="../all-components/user-sidebar.jsp"%>
 
 
@@ -124,8 +127,9 @@ session.removeAttribute("upload-fail");
 							<div class="wrapper">
 								<header>Upload Files</header>
 
-								<input class="file-input" type="file" name="files" multiple="multiple" hidden>
-								<input value="<%=u.getId()%>" name="userId" hidden="hidden" >
+								<input class="file-input" type="file" name="files"
+									multiple="multiple" hidden> <input
+									value="<%=u.getId()%>" name="userId" hidden="hidden">
 								<i class="fas fa-cloud-upload-alt"></i>
 								<p>Browse File to Upload</p>
 
@@ -133,24 +137,23 @@ session.removeAttribute("upload-fail");
 								<section class="uploaded-area"></section>
 								<div class="mb-3">
 									<input type="text" name="setName" class="form-control"
-										value="<%=date %>" aria-label="Name" readonly="readonly">
+										value="<%=date%>" aria-label="Name" readonly="readonly">
 								</div>
-								
+
 
 							</div>
-							
-						
 					</div>
 
-<button class="btn btn-primary mb-0 w-70" style="align-self: center;" type="submit">Send
-									Files</button><br>
+					<button class="btn btn-primary mb-0 w-70"
+						style="align-self: center;" type="submit">Send Files</button>
+					<br>
 				</div>
 				<br>
-				
-			</div>
-			
 
-</form>
+			</div>
+
+
+			</form>
 		</div>
 
 		<div class="container-fluid py-4">
@@ -168,46 +171,107 @@ session.removeAttribute("upload-fail");
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SetName</th>
 											<th
+												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Token</th>
+											<th
 												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DocName</th>
 											<th
-												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pages</th>
-											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Token</th>
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pages</th>
 											<th
 												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cost</th>
 										</tr>
 									</thead>
 									<tbody>
-									<%
-									UserDAO ud=new UserDAO();
-									ud.findDocumentByUserId(u.getId());
-									%>
-										<tr>
-											<td>
+										<%
+										try {
+											UserDAO ud = new UserDAO();
+											ResultSet rs = ud.findDocumentByUserId(u.getId());
+
+											String temp = "";
+											int flag=0;
+											int k=0;
+											int cnt = 0;
+											
+											System.out.println("outside loop");
+											while (rs.next()) {
+												System.out.println("while loop");
+												if(temp.compareTo(rs.getString(3))==0){
+													
+												}else{
+													temp = rs.getString(3);
+													flag=0;
+													cnt=ud.getCountBySetName(rs.getString(3));
+													
+													System.out.println("in the if"+temp);
+													
+												}
+										%>
+										
+
+
+											<%
+											if (temp.equals(rs.getString(3)) && flag==0) {
+												flag=1;
+												System.out.println("in the second if"+rs.getString(3));
+
+											%>
+											<tr>
+											<td rowspan='<%=cnt%>' >
 												<div class="d-flex px-2 py-1">
 													<div>
 														<img src="../assets/img/pdf.png"
 															class="avatar avatar-sm me-3" alt="user1">
 													</div>
 													<div class="d-flex flex-column justify-content-center">
-														<h6 class="mb-0 text-sm">cn assignment 1</h6>
+														<h6 class="mb-0 text-sm"><%=rs.getString(3)%></h6>
 													</div>
 												</div>
 											</td>
-											<td class="align-middle text-center text-sm"><span
-												class="badge badge-sm bg-gradient-success">5</span></td>
-											<td class="align-middle text-center text-sm"><span
-												class="badge badge-sm bg-gradient-success">5</span></td>
-											<td>
-												<p class="text-xs font-weight-bold mb-0">PDF</p>
+											
+											<td rowspan='<%=cnt%>'>
+												<p class="text-xs font-weight-bold mb-0"><%=rs.getString(7)%></p>
 											</td>
+												
+												<td  class="align-middle text-center text-sm"><span
+												class="badge badge-sm bg-gradient-success"><%=rs.getString(4)%></span></td>
 											<td class="align-middle text-center"><span
-												class="text-secondary text-xs font-weight-bold">23/04/18</span>
-											</td>
+												class="text-secondary text-xs font-weight-bold">-</span></td>
+											<td class="align-middle text-center"><span
+												class="text-secondary text-xs font-weight-bold">-</span></td>
+																
+											<%
+											System.out.println(cnt);
+											} else {
+											%>
+											
+										<td  class="align-middle text-center text-sm"><span
+												class="badge badge-sm bg-gradient-success"><%=rs.getString(4)%></span></td>
+											<td class="align-middle text-center"><span
+												class="text-secondary text-xs font-weight-bold">-</span></td>
+											<td class="align-middle text-center"><span
+												class="text-secondary text-xs font-weight-bold">-</span></td>
+											<%
+											
+											
+											}
+											temp = rs.getString(3);
+											k=1;
+											%>
 
-										</tr>
 
+
+											
 										
+</tr>
+										<%
+										}
+
+										} catch (Exception e) {
+
+										}
+										%>
+
+
+
 
 									</tbody>
 								</table>

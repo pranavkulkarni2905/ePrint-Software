@@ -142,5 +142,30 @@ public class UserDAO {
 		}
 		return rs;
 	}
+	
+	public int getCountBySetName(String setName) {
+		
+		int i=0,cnt=0;
+		ResultSet rs=null;
+		con = DBConnection.getConnection();
+		try {
+			ps = con.prepareStatement(
+					"select count(*) from document where set_name=?");
+			ps.setString(1, setName);
+			
+			
+			rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				cnt=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cnt;
+		
+		
+	}
 
 }
