@@ -244,10 +244,10 @@
               <div class="card-body p-3">
              
                 <div class="wrapper">                
-                    <form action="#">
+                    <form action="GetFileController" method="post">
                         <div class="form-group">
                             <!-- <label for="example-number-input" class="form-control-label">Number</label> -->
-                            <input class="form-control" type="number" value="" id="example-number-input">
+                            <input class="form-control" name="token" type="number" value="" id="example-number-input">
                         </div>
                     </form>
                     <section class="progress-area"></section>
