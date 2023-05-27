@@ -1,3 +1,4 @@
+<%@page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
@@ -24,9 +25,43 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/token-print.css">
+  
+  
+
+
+ <script src="print.js"></script>
+ <link rel="stylesheet" type="text/css" href="print.css">
+
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
+
+<%
+ResultSet rs=null;
+	try {
+		boolean msg = (boolean) session.getAttribute("get-file-success");
+		if (msg == true) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Congratulations!',
+				'File Found',
+				'success')
+	</script>
+	<%
+	} else {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Enter Correct Credential..', 'warning')
+	</script>
+	<%
+	}
+	} catch (Exception e) {
+
+	}
+	session.removeAttribute("get-file-success");
+	%>
+
+
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
 
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
@@ -244,16 +279,16 @@
               <div class="card-body p-3">
              
                 <div class="wrapper">                
-                    <form action="GetFileController" method="post">
+                    <form action="../GetFileController" method="post">
                         <div class="form-group">
                             <!-- <label for="example-number-input" class="form-control-label">Number</label> -->
                             <input class="form-control" name="token" type="number" value="" id="example-number-input">
                         </div>
-                    </form>
+
                     <section class="progress-area"></section>
                     <section class="uploaded-area"></section>
-                    <a class="btn btn-primary mb-0 w-100" href="" type="button">Search Print</a>
-
+                    <button class="btn btn-primary mb-0 w-100" href="" >Search Print</button>
+                    </form>
                   </div>
               </div>
 
@@ -263,7 +298,7 @@
           
           
         </div>
-
+	
         <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
@@ -280,6 +315,7 @@
                   <div class="table-responsive p-0">
                     <table class="table align-items-center mb-0">
                       <thead>
+               
                         <tr>
                             
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Doc Name</th>
@@ -290,7 +326,12 @@
                         </tr>
                       </thead>
                       <tbody>
-
+<%
+	try {
+		rs = (ResultSet) session.getAttribute("get-file");
+		if(rs!=null){
+		do {
+	%>
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">
@@ -298,155 +339,40 @@
                                 <img src="../assets/img/pdf.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
                               </div>
                               <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">cn assignment 1</h6>
+                                <h6 class="mb-0 text-sm"><%=rs.getString(4) %></h6>
                               </div>
                             </div>
                           </td>
                           <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
+                            <span class="badge badge-sm bg-gradient-success">-</span>
                           </td>
                           <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
+                            <span class="badge badge-sm bg-gradient-success">-</span>
                           </td>
                           <td class="align-middle">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                            <span class="text-secondary text-xs font-weight-bold"> <%=rs.getString(3) %></span>
                           </td>
                           <td>
+                          
                             <div>
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <a href="">
-                                        <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                    </a>
+                                    <button type="button" onclick="printJS({printable:'../Print_Management_Software/user-doc/<%=rs.getString(4) %>', type:'pdf', showModal:true})">
+                                        <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" >
+                                    </button>
+                                    
+                                   
+                              </div>
                               </div>
                           </td>
                           
                         </tr>
-
-                        <tr>
-                            <td>
-                              <div class="d-flex px-2 py-1">
-                                <div>
-                                  <img src="../assets/img/docx.png" class="avatar avatar-sm me-3" alt="user1">
-                                </div>
-                                <div class="d-flex flex-column justify-content-center">
-                                  <h6 class="mb-0 text-sm">cn assignment 1</h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                              <span class="badge badge-sm bg-gradient-success">5</span>
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                              <span class="badge badge-sm bg-gradient-success">5</span>
-                            </td>
-                            <td class="align-middle">
-                                <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                              </td>
-                              <td>
-                                <div>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a href="">
-                                            <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                        </a>
-                                  </div>
-                              </td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="d-flex px-2 py-1">
-                                <div>
-                                  <img src="../assets/img/pdf.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                </div>
-                                <div class="d-flex flex-column justify-content-center">
-                                  <h6 class="mb-0 text-sm">cn assignment 1</h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                              <span class="badge badge-sm bg-gradient-success">5</span>
-                            </td>
-                            <td class="align-middle text-center text-sm">
-                              <span class="badge badge-sm bg-gradient-success">5</span>
-                            </td>
-                            <td class="align-middle">
-                                <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                              </td>
-                              <td>
-                                <div>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <a href="">
-                                            <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                        </a>
-                                  </div>
-                              </td>
-                            
-                          </tr>
-
-
-                       <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div>
-                                <img src="../assets/img/pdf.png" class="avatar avatar-sm me-3" alt="user1">
-                              </div>
-                              <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">cn assignment 1</h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
-                          </td>
-                          <td class="align-middle">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                          <td>
-                            <div>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <a href="">
-                                        <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                    </a>
-                              </div>
-                          </td>
-                          
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div>
-                                <img src="../assets/img/pdf.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                              </div>
-                              <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">cn assignment 1</h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">5</span>
-                          </td>
-                          <td class="align-middle">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                          <td>
-                            <div>
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <a href="">
-                                        <img src="../assets/img/printer.png" class="avatar avatar-sm me-3" alt="user1" onclick="window.print(); return false;">
-                                    </a>
-                              </div>
-                          </td>
-                          
-                        </tr>
-
-                        
+<%
+		}while(rs.next());
+		}
+	}catch(Exception e){
+			
+		}
+	%>
                       </tbody>
                     </table>
                   </div>

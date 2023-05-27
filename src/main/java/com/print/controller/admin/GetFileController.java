@@ -1,12 +1,18 @@
 package com.print.controller.admin;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.print.DAO.AdminDao;
 
 /**
  * Servlet implementation class GetFileController
@@ -30,6 +36,27 @@ public class GetFileController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int token = Integer.parseInt(request.getParameter("token"));
+		ResultSet rs = null;
+		AdminDao aDao = new AdminDao();
+		HttpSession session = request.getSession();
+
+		rs = aDao.getFileNameByToken(token);
+		ServletContext sc5 = request.getServletContext();
+		try {
+			if (rs.next()) {
+				session.setAttribute("get-file", rs);
+				session.setAttribute("get-file-success", true);
+				response.sendRedirect("admin/token-print.jsp");
+			} else {
+				session.setAttribute("get-file", rs);
+				session.setAttribute("get-file-fail", false);
+				response.sendRedirect("admin/token-print.jsp");
+			}
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
