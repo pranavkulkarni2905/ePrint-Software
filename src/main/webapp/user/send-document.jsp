@@ -174,10 +174,7 @@ if (u == null) {
 												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Token</th>
 											<th
 												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DocName</th>
-											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pages</th>
-											<th
-												class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cost</th>
+									
 										</tr>
 									</thead>
 									<tbody>
@@ -233,10 +230,7 @@ if (u == null) {
 												
 												<td  class="align-middle text-center text-sm"><span
 												class="badge badge-sm bg-gradient-success"><%=rs.getString(4)%></span></td>
-											<td class="align-middle text-center"><span
-												class="text-secondary text-xs font-weight-bold">-</span></td>
-											<td class="align-middle text-center"><span
-												class="text-secondary text-xs font-weight-bold">-</span></td>
+											
 																
 											<%
 											System.out.println(cnt);

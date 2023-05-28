@@ -31,6 +31,12 @@
 
  <script src="print.js"></script>
  <link rel="stylesheet" type="text/css" href="print.css">
+ 
+  
+ <script src="sweetalert2.all.min.js"></script>
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -39,7 +45,7 @@
 <%
 ResultSet rs=null;
 	try {
-		boolean msg = (boolean) session.getAttribute("get-file-success");
+		boolean msg = (boolean) session.getAttribute("get-files-success");
 		if (msg == true) {
 	%>
 	<script type="text/javascript">
@@ -58,10 +64,64 @@ ResultSet rs=null;
 	} catch (Exception e) {
 
 	}
-	session.removeAttribute("get-file-success");
+	session.removeAttribute("get-files-success");
 	%>
 
+<%
+try{
+boolean msg1 = (boolean) session.getAttribute("get-files-fail");
+if (msg1==false) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Invalid token or already used','warning')
+	</script>
+	<%
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("get-files-fail");
+%>
 
+<%
+	try {
+		boolean msg = (boolean) session.getAttribute("deduct-money-success");
+		if (msg == true) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Congratulations!',
+				'Money Deducted From account for your print',
+				'success')
+	</script>
+	<%
+	} else {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Error with your wallet', 'warning')
+	</script>
+	<%
+	}
+	} catch (Exception e) {
+
+	}
+	session.removeAttribute("deduct-money-success");
+	%>
+
+<%
+try{
+boolean msg1 = (boolean) session.getAttribute("deduct-money-fail");
+if (msg1==false) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Insufficient fund in user wallet . Please collect cash','warning')
+	</script>
+	<%
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("deduct-money-fail");
+%>
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
 
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
@@ -303,14 +363,7 @@ ResultSet rs=null;
         <div class="row">
             <div class="col-12">
               <div class="card mb-4">
-                <div class="card-header pb-0 d-flex justify-content-lg-between">
-                    <div>
-                        <h6>Set Name: <span class="text-secondary font-weight-bolder">CN Assignment</span></h6>
-                    </div>
-                    <div>
-                        <h6>Token Number: <span class="text-secondary font-weight-bolder">1202565</span></h6>
-                    </div>
-                </div>
+                
                 <div class="card-body px-0 pt-0 pb-2">
                   <div class="table-responsive p-0">
                     <table class="table align-items-center mb-0">
@@ -328,7 +381,8 @@ ResultSet rs=null;
                       <tbody>
 <%
 	try {
-		rs = (ResultSet) session.getAttribute("get-file");
+		ServletContext sc=getServletContext();
+		rs = (ResultSet) sc.getAttribute("get-file");
 		if(rs!=null){
 		do {
 	%>
@@ -344,10 +398,10 @@ ResultSet rs=null;
                             </div>
                           </td>
                           <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">-</span>
+                            <span class="badge badge-sm bg-gradient-success"><%=rs.getString(5) %></span>
                           </td>
                           <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">-</span>
+                            <span class="badge badge-sm bg-gradient-success"><%=rs.getString(6) %></span>
                           </td>
                           <td class="align-middle">
                             <span class="text-secondary text-xs font-weight-bold"> <%=rs.getString(3) %></span>

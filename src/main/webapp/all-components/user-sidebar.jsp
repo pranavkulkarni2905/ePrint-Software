@@ -76,11 +76,11 @@ if (u2 == null) {
 							<i class="ni ni-send text-warning text-sm opacity-10"></i>
 						</div> <span class="nav-link-text ms-1">Send Document</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link " href="">
+				<li class="nav-item"><a class="nav-link " href="wallet.jsp">
 						<div
 							class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
 							<i class="ni ni-single-copy-04 text-info text-sm opacity-10"></i>
-						</div> <span class="nav-link-text ms-1">Print History</span>
+						</div> <span class="nav-link-text ms-1">Wallet</span>
 				</a></li>
 
 				<li class="nav-item"><a class="nav-link " href="">

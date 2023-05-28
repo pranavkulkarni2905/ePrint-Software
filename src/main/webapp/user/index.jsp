@@ -1,3 +1,4 @@
+<%@page import="com.print.DAO.UserDAO"%>
 <%@page import="com.print.model.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -19,7 +20,12 @@ if (u == null) {
 
 
 <body class="g-sidenav-show   bg-gray-100">
-
+<%
+	UserDAO uDao=new UserDAO();
+	
+	
+	int wallletBal=uDao.getWalletBalanceByUserId(u.getId());
+%>
 
 <%@ include file="../all-components/user-sidebar.jsp" %>
 
@@ -36,7 +42,7 @@ if (u == null) {
                   <div class="numbers">
                     <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
                     <h5 class="font-weight-bolder">
-                      $53,000
+                      <%=wallletBal %>
                     </h5>
                     <p class="mb-0">
                       <span class="text-success text-sm font-weight-bolder">+55%</span>

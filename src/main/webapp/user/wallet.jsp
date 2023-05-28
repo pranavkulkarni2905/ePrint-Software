@@ -1,3 +1,6 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="com.print.model.User"%>
+<%@page import="com.print.DAO.UserDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
@@ -30,7 +33,22 @@
 
 <body class="g-sidenav-show   bg-gray-100">
   <!-- <div class="min-height-300 bg-primary position-absolute w-100"></div> -->
-
+     <%
+     ResultSet rs=null;
+ServletContext sc1 = request.getServletContext();
+User u = (User) sc1.getAttribute("user");
+int uid=u.getId();
+if (u == null) {
+	//session.setAttribute("user-login", 404);
+	//response.sendRedirect("404.jsp");
+}
+%>  
+<%
+	UserDAO uDao=new UserDAO();
+	
+	
+	int wallletBal=uDao.getWalletBalanceByUserId(u.getId());
+%>
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -43,7 +61,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="">
+          <a class="nav-link" href="index.jsp">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -240,18 +258,9 @@
                         <div class="p-4 d-flex flex-column bg-primary round-corner">
                             <span class="text-uppercase font-15 weight-600 white-color-2">Balance Details</span>
                             <span class="font-28 weight-700 white-color mt-4">Rs. 
-                            <span class="font-28 weight-700 white-color" id="balance">4,563</span></span>
+                            <span class="font-28 weight-700 white-color" id="balance"><%=wallletBal %></span></span>
                             
-                            <div class="d-flex flex-row justify-content-between mt-4">
-                                <div class="d-flex flex-column">
-                                    <span class="font-16 weight-600 white-color" id="total_added">3,742.00</span>
-                                    <span class="font-12 weight-400 white-color-2">Total Added</span>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <span class="font-16 weight-600 white-color" id="total_expense">2,987.00</span>
-                                    <span class="font-12 weight-300 white-color-2">Total Expense</span>
-                                </div>
-                            </div>
+                            
                             <div class="d-flex flex-row mt-4">
                                 <button class="flex-grow-1 me-1 py-2 text-uppercase font-12 weight-700 purple-color-2 grey-bg-color">Add</button>
                                 <button class="flex-grow-1 ms-1 py-2 text-uppercase font-12 weight-700 white-color orange-bg-color">Withdrawal</button>
@@ -296,10 +305,17 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase font-10 weight-600">Transactions</th>
+                                        <th class="text-uppercase font-10 weight-600 purple-color-2 text-center">Document Name</th>
                                         <th class="text-uppercase font-10 weight-600 purple-color-2 text-center">Amount</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <%
+                                	try{
+                                	rs=uDao.getUserTransectionInfoByUserId(uid);
+                                while(rs.next()){
+                                %>
                                     <tr>
                                         <td>
                                             <div class="d-flex flex-row">
@@ -308,52 +324,29 @@
                                                 </div>
                                                 <div class="d-flex flex-column ps-2">
                                                     <span class="font-14 weight-700 purple-color-2">Paid</span>
-                                                    <span class="font-10 weight-400 purple-color-2">12 Nov, 2020</span>
+                                                    <span class="font-10 weight-400 purple-color-2"><%=rs.getString(5) %></span>
                                                 </div>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class="d-flex flex-column align-items-center">
+                                                <span class=" font-16 weight-700 orange-color ">-<%=rs.getString(4) %></span>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex flex-column align-items-center">
-                                                <span class=" font-16 weight-700 orange-color ">-50</span>
+                                                <span class=" font-16 weight-700 orange-color ">-<%=rs.getInt(3) %></span>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex flex-row ">
-                                                <div class="d-flex flex-row justify-content-center align-items-center square round-corner-small light-purple-bg-color purple-color-2 font-14 ">
-                                                    <i class="fas fa-long-arrow-alt-down "></i>
-                                                </div>
-                                                <div class="d-flex flex-column ps-2 ">
-                                                    <span class="font-14 weight-700 purple-color-2 ">Added</span>
-                                                    <span class="font-10 weight-400 purple-color-2 ">12 Nov, 2020</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-column align-items-center ">
-                                                <span class="font-16 weight-700 purple-color-2 ">+100</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex flex-row ">
-                                                <div class="d-flex flex-row justify-content-center align-items-center square round-corner-small light-orange-bg-color orange-color font-14 ">
-                                                    <i class="fas fa-long-arrow-alt-up "></i>
-                                                </div>
-                                                <div class="d-flex flex-column ps-2 ">
-                                                    <span class="font-14 weight-700 purple-color-2 ">Paid</span>
-                                                    <span class="font-10 weight-400 purple-color-2 ">12 Nov, 2020</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-column align-items-center ">
-                                                <span class="font-16 weight-700 orange-color ">-10</span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <%
+                                    
+                                }
+                                	}catch(Exception e){
+                                		
+                                	}
+                                    %>
+                                  
                                 </tbody>
 
                             </table>

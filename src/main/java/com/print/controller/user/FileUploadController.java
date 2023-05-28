@@ -1,5 +1,6 @@
 package com.print.controller.user;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 import com.print.DAO.UserDAO;
 import com.print.email.SendMail;
@@ -52,7 +55,7 @@ public class FileUploadController extends HttpServlet {
 
 		UserDAO ud = new UserDAO();
 		int i1 = 0;
-
+		int pageCount = 0;
 		List<Part> files = (List<Part>) request.getParts();
 		for (int i = 0; i < files.size() - 2; i++) {
 			String imageFileName = files.get(i).getSubmittedFileName(); // Get the selected image file name
@@ -87,7 +90,13 @@ public class FileUploadController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			i1 = ud.uploadDocuments(userId, setName, token, imageFileName);
+			try (PDDocument document = PDDocument.load(new File(uploadPath))) {
+				pageCount = document.getNumberOfPages();
+				System.out.println("Number of pages: " + pageCount);
+			} catch (IOException e) {
+				// Handle any errors
+			}
+			i1 = ud.uploadDocuments(userId, setName, token, imageFileName, pageCount);
 
 		}
 		HttpSession session = request.getSession();

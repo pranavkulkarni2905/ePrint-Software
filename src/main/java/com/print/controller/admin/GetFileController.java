@@ -37,19 +37,35 @@ public class GetFileController extends HttpServlet {
 			throws ServletException, IOException {
 		int token = Integer.parseInt(request.getParameter("token"));
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		AdminDao aDao = new AdminDao();
 		HttpSession session = request.getSession();
-
+		int x = 0;
 		rs = aDao.getFileNameByToken(token);
+		rs2 = aDao.getFileNameByToken(token);
+		try {
+			while (rs2.next()) {
+				aDao.changeFileStatusByDocid(rs2.getInt(1));
+				x = aDao.deductMoney(rs2.getInt(2), rs2.getInt(6), rs2.getString(4));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		ServletContext sc5 = request.getServletContext();
 		try {
+			if (x > 0) {
+				session.setAttribute("deduct-money-success", true);
+			} else {
+				session.setAttribute("deduct-money-fail", false);
+			}
 			if (rs.next()) {
-				session.setAttribute("get-file", rs);
-				session.setAttribute("get-file-success", true);
+				sc5.setAttribute("get-file", rs);
+				session.setAttribute("get-files-success", true);
 				response.sendRedirect("admin/token-print.jsp");
 			} else {
 				session.setAttribute("get-file", rs);
-				session.setAttribute("get-file-fail", false);
+				session.setAttribute("get-files-fail", false);
 				response.sendRedirect("admin/token-print.jsp");
 			}
 		} catch (SQLException | IOException e) {

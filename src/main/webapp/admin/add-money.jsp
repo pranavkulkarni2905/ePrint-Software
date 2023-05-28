@@ -1,3 +1,5 @@
+<%@page import="com.print.DAO.AdminDao"%>
+<%@page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
@@ -26,9 +28,58 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/add-money.css">
+  
+  
+ <script src="sweetalert2.all.min.js"></script>
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
+
+<%
+ResultSet rs=null;
+	try {
+		boolean msg = (boolean) session.getAttribute("add-money-success");
+		if (msg == true) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Congratulations!',
+				'Money Added to Users account',
+				'success')
+	</script>
+	<%
+	} else {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Enter Correct Phone number..', 'warning')
+	</script>
+	<%
+	}
+	} catch (Exception e) {
+
+	}
+	session.removeAttribute("add-money-success");
+	%>
+
+<%
+try{
+boolean msg1 = (boolean) session.getAttribute("add-money-fail");
+if (msg1==false) {
+	%>
+	<script type="text/javascript">
+		Swal.fire('Oops!', 'Invalid Phone Number','warning')
+	</script>
+	<%
+}
+}catch(Exception e){
+	
+}
+session.removeAttribute("add-money-fail");
+%>
+
+
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
 
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
@@ -246,10 +297,10 @@
               <div class="card-body p-3">
              
                 <div class="wrapper">                
-                    <form action="#">
+                    <form action="../AddMoneyController" method="post">
                         <div class="form-group">
                             <label for="example-number-input" class="form-control-label">Amount</label>
-                            <input class="form-control" type="number" value="0" id="example-number-input">
+                            <input class="form-control" type="number"  name="amount" value="0" id="example-number-input">
                         </div>
                         <div class="row mt-2">
                         <div class="add_amount col-lg-12 mb-lg-0 mb-3">
@@ -261,8 +312,10 @@
                         </div>
                         <div class="form-group p-0">
                             <label for="example-tel-input" class="form-control-label">Phone</label>
-                            <input class="form-control" type="tel" value="" id="example-tel-input">
+                            <input class="form-control" name="phone" type="text" value="" id="example-tel-input">
                         </div>
+                         <button class="btn btn-primary mb-0 w-100"  >Add Money</button>
+                        
                     </form>
 
                     <script>
@@ -275,8 +328,7 @@
                     
                     <section class="progress-area"></section>
                     <section class="uploaded-area"></section>
-                    <a class="btn btn-primary mb-0 w-100" href="" type="button">Add Money</a>
-
+                   
                   </div>
               </div>
 
@@ -307,86 +359,50 @@
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">Amount</th>
                             
                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center ">date/time</th>
+                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center ">Type</th>
                           
                         </tr>
                       </thead>
                       <tbody>
+<%
 
+AdminDao aDao=new AdminDao();
+try{
+		
+
+		rs=aDao.getAdminTransectionInfo();
+		
+		if(rs!=null){
+			
+		while(rs.next()){
+		
+%>
                         <tr>
                             <td class="align-middle text-center text-sm" id="phone_number">
-                            <span class="text-secondary text-xs font-weight-bold">123456789</span>
+                            <span class="text-secondary text-xs font-weight-bold"><%=rs.getString(1) %></span>
                             </td>
                           <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">500</span>
+                            <span class="badge badge-sm bg-gradient-success"><%=rs.getInt(2) %></span>
                           </td>
                           
                           <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                            <span class="text-secondary text-xs font-weight-bold"><%=rs.getString(3) %></span>
                           </td>
                         
-                          
+                           <td class="align-middle text-center text-sm">
+                            <span class="text-secondary text-xs font-weight-bold"><%=rs.getString(4) %></span>
+                          </td>
                         </tr>
 
-                        <tr>
-                            <td class="align-middle text-center text-sm" id="phone_number">
-                            <span class="text-secondary text-xs font-weight-bold">123456789</span>
-                            </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">50</span>
-                          </td>
-                          
-                          <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        
-                          
-                        </tr>
+                       
+<%
+		}
+		}
+		}catch(Exception e){
+			
+		}
 
-                        <tr>
-                            <td class="align-middle text-center text-sm" id="phone_number">
-                            <span class="text-secondary text-xs font-weight-bold">123456789</span>
-                            </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">50</span>
-                          </td>
-                          
-                          <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        
-                          
-                        </tr>
-
-                        <tr>
-                            <td class="align-middle text-center text-sm" id="phone_number">
-                            <span class="text-secondary text-xs font-weight-bold">123456789</span>
-                            </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">55</span>
-                          </td>
-                          
-                          <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        
-                          
-                        </tr>
-                        <tr>
-                            <td class="align-middle text-center text-sm" id="phone_number">
-                            <span class="text-secondary text-xs font-weight-bold">123456789</span>
-                            </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">75</span>
-                          </td>
-                          
-                          <td class="align-middle text-center text-sm">
-                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                          </td>
-                        
-                          
-                        </tr>
-                        
-
+%>
                         
                       </tbody>
                     </table>
