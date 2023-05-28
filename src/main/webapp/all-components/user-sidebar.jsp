@@ -90,12 +90,7 @@ if (u2 == null) {
 							<i class="ni ni-money-coins text-info text-sm opacity-10"></i>
 						</div> <span class="nav-link-text ms-1">Payment</span>
 				</a></li>
-				<li class="nav-item"><a class="nav-link " href="">
-						<div
-							class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
-						</div> <span class="nav-link-text ms-1">Print Options</span>
-				</a></li>
+				
 
 				<li class="nav-item"><a class="nav-link " href="">
 						<div
